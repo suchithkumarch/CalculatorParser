@@ -1,9 +1,7 @@
 // Tokens : '+', -', '/', '*', '(', ')', 'NUM' i.e (0-9)+
 
-class Lexer(var code: String) {
+class Lexer(val code: String) {
   val tokenList: Array[Token] = tokenize("", List(), code, 0).toArray
-  val tokens: Array[String] = tokenList.map(t => t.token)
-  val tTypes: Array[String] = tokenList.map(t => t.tokenType)
 
   def tokenize(numAcc: String, tokenlist: List[Token], inputStr: String, position: Int): List[Token] = {
     val StrLen = inputStr.length

@@ -48,13 +48,13 @@ class Parser(tok: Lexer) {
   }
 
   def addHelper(leftTree: Tree): Tree = {
-    val cond: Boolean = position < tok.tokens.length && (tok.tTypes(position) == "+" || tok.tTypes(position) == "-")
+    val cond: Boolean = position < tok.tokenList.length && (tok.tokenList(position).tokenType == "+" || tok.tokenList(position).tokenType == "-")
     cond match {
       case true => {
         position += 1
-        val tp = tok.tTypes(position - 1)
+        val typ = tok.tokenList(position-1).tokenType//tok.tTypes(position - 1)
         val rightTree = parse_multi_expression();
-        val tre = new Tree(tp, 0, leftTree, rightTree)
+        val tre = new Tree(typ, 0, leftTree, rightTree)
         addHelper(tre);
       }
       case _ => {
@@ -69,13 +69,13 @@ class Parser(tok: Lexer) {
   }
 
   def multiHelper(leftTree: Tree): Tree = {
-    val cond: Boolean = position < tok.tokens.length && (tok.tTypes(position) == "*" || tok.tTypes(position) == "/")
+    val cond: Boolean = position < tok.tokenList.length && (tok.tokenList(position).tokenType == "*" || tok.tokenList(position).tokenType == "/")
     cond match {
       case true => {
         position += 1
-        val tp = tok.tTypes(position - 1)
+        val typ = tok.tokenList(position-1).tokenType
         val rightTree = parse_atomic_expression();
-        val tre = new Tree(tp, 0, leftTree, rightTree)
+        val tre = new Tree(typ, 0, leftTree, rightTree)
         multiHelper(tre);
       }
       case _ => {
@@ -90,12 +90,12 @@ class Parser(tok: Lexer) {
   }
 
   def parse_atomic_expression(): Tree = {
-    if (position < tok.tokens.length) {
-      tok.tTypes(position) match {
+    if (position < tok.tokenList.length) {
+      tok.tokenList(position).tokenType match {
         case "(" => {
           position += 1
           val exp = parse_add_expression()
-          tok.tTypes(position) match {
+          tok.tokenList(position).tokenType match {
             case ")" => {
               position += 1
               exp
@@ -121,11 +121,11 @@ class Parser(tok: Lexer) {
 
 
   def parse_number(): Tree = {
-    if (position < tok.tokens.length) {
-      tok.tTypes(position) match {
+    if (position < tok.tokenList.length) {
+      tok.tokenList(position).tokenType match {
         case "NUM" => {
           position += 1
-          var t = new Tree("NUM", tok.tokens(position - 1).toDouble, null, null)
+          var t = new Tree("NUM", tok.tokenList(position-1).token.toDouble, null, null)
           t;
         }
         case _ => {
