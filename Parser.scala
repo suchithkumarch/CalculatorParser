@@ -19,7 +19,7 @@
  */
 
 class Parser(tok: Lexer) {
-  var position: Int = 0;
+  var position: Int = 0
 
   def solve(): Double = {
     calculate(parse_add_expression())
@@ -32,12 +32,12 @@ class Parser(tok: Lexer) {
       case "-" => calculate(t.left) - calculate(t.right)
       case "*" => calculate(t.left) * calculate(t.right)
       case "/" => {
-        val l = calculate(t.left);
-        val r = calculate(t.right);
+        val l = calculate(t.left)
+        val r = calculate(t.right)
         r match {
           case 0 => {
-            println("Division by 0 error");
-            System.exit(0);
+            println("Division by 0 error")
+            System.exit(0)
             0.0
           }
           case _ => l / r
@@ -52,10 +52,10 @@ class Parser(tok: Lexer) {
     cond match {
       case true => {
         position += 1
-        val typ = tok.tokenList(position-1).tokenType//tok.tTypes(position - 1)
-        val rightTree = parse_multi_expression();
+        val typ = tok.tokenList(position-1).tokenType
+        val rightTree = parse_multi_expression()
         val tre = new Tree(typ, 0, leftTree, rightTree)
-        addHelper(tre);
+        addHelper(tre)
       }
       case _ => {
         leftTree
@@ -64,7 +64,7 @@ class Parser(tok: Lexer) {
   }
 
   def parse_add_expression(): Tree = {
-    val leftTree = parse_multi_expression();
+    val leftTree = parse_multi_expression()
     addHelper(leftTree)
   }
 
@@ -74,9 +74,9 @@ class Parser(tok: Lexer) {
       case true => {
         position += 1
         val typ = tok.tokenList(position-1).tokenType
-        val rightTree = parse_atomic_expression();
+        val rightTree = parse_atomic_expression()
         val tre = new Tree(typ, 0, leftTree, rightTree)
-        multiHelper(tre);
+        multiHelper(tre)
       }
       case _ => {
         leftTree
@@ -85,7 +85,7 @@ class Parser(tok: Lexer) {
   }
 
   def parse_multi_expression(): Tree = {
-    val leftTree = parse_atomic_expression();
+    val leftTree = parse_atomic_expression()
     multiHelper(leftTree)
   }
 
@@ -101,19 +101,19 @@ class Parser(tok: Lexer) {
               exp
             }
             case _ => {
-              println("Invalid input");
+              println("Invalid input")
               System.exit(0)
               null
             }
           }
         }
         case _ => {
-          parse_number();
+          parse_number()
         }
       }
     }
     else {
-      println("Invalid input");
+      println("Invalid input")
       System.exit(0)
       null
     }
@@ -125,18 +125,18 @@ class Parser(tok: Lexer) {
       tok.tokenList(position).tokenType match {
         case "NUM" => {
           position += 1
-          var t = new Tree("NUM", tok.tokenList(position-1).token.toDouble, null, null)
-          t;
+          val t = new Tree("NUM", tok.tokenList(position-1).token.toDouble, null, null)
+          t
         }
         case _ => {
-          println("Invalid input");
+          println("Invalid input")
           System.exit(0)
           null
         }
       }
     }
     else {
-      println("Invalid input");
+      println("Invalid input")
       System.exit(0)
       null
     }
